@@ -1,0 +1,23 @@
+{
+  "name": "mwd",
+  "version": "1.0.0",
+  "description": "materia wolves den discord bot",
+  "main": "./src/bot.js",
+  "scripts": {
+    "test": "test",
+    "start": "node .",
+    "deploy": "node deploy-commands.js"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.44",
+    "axios": "^1.6.5",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jquery": "^3.7.1",
+    "undici": "^6.3.0"
+  }
+}
