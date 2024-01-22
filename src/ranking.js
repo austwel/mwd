@@ -124,8 +124,10 @@ export async function top100Image() {
     canvas.GlobalFonts.registerFromPath('./src/fonts/SpaceMono-Regular.ttf', 'spacemono')
     canvas.GlobalFonts.registerFromPath('./src/fonts/DMMono-Regular.ttf', 'dmmono')
     canvas.GlobalFonts.registerFromPath('./src/fonts/ChivoMono-VariableFont_wght.ttf', 'chivomono')
+    canvas.GlobalFonts.registerFromPath('./src/fonts/ebrima.ttf', 'ebrima')
+    canvas.GlobalFonts.registerFromPath('./src/fonts/ebrima-bold.ttf', 'boldebrima')
 
-    context.font = '34px Ebrima';
+    context.font = '34px ebrima';
 
     context.lineWidth = 0
     context.strokeStyle = '#424874'
@@ -178,7 +180,7 @@ export async function top100Image() {
         context.textAlign = 'center'
         let fontSize = 58
         do {
-            context.font = `${fontSize -= 2}px Ebrima`
+            context.font = `${fontSize -= 2}px ebrima`
         } while (context.measureText(`${i+1}`).width > 75)
         //
         context.fillText(`${i+1}`, startx+35+((58-fontSize)/2), starty+62-((58-fontSize)/4))
@@ -187,7 +189,7 @@ export async function top100Image() {
         //
         fontSize = 34
         do {
-            context.font = `bold ${fontSize -= 2}px Ebrima`
+            context.font = `${fontSize -= 2}px boldebrima`
         } while (context.measureText(list[i].name).width > 350)
         //
         context.fillText(list[i].name, startx + 175, starty + 40)

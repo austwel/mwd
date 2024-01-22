@@ -1,6 +1,6 @@
 {
   "name": "mwd",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "materia wolves den discord bot",
   "main": "./src/bot.js",
   "scripts": {
