@@ -46,6 +46,7 @@ export function getTop100() {
     const divisions_lookup_regex = /(?<=class="js--wolvesden-tooltip">\s+<p>)([^ ]{1,2})(?=<\/p>)/g
     const stars_lookup_regex = /(?<=class="data">)(<i>[★☆]<\/i>)*(?=<\/span>)/g
     fetch('https://na.finalfantasyxiv.com/lodestone/ranking/crystallineconflict/?dcgroup=Materia')
+    //fetch('https://na.finalfantasyxiv.com/lodestone/ranking/crystallineconflict/result/9/?dcgroup=Materia')
         .then(res => {
             res.text()
                 .then(
@@ -106,13 +107,13 @@ export async function top100Image() {
     let list = await getTop100()
 
     const colour_map = {
-        'Unranked': ["#58595c ", "#78787a", '#929292'],
-        'Bronze': ["#958c6c", "#afa788", '#d7d0b4'],
-        'Silver': ["#99b1b8", "#b2c7cd", "#e5f4f9"],
-        'Gold': ["#d1b860",  "#e4d789", "#fbfbb9"],
-        'Platinum': ["#57baa2", "#89e4d1", '#8bf2dd'],
-        'Diamond': ["#00aabb", "#33cbdb", '#6df1ff'],
-        'Crystal': ["#1e5cc0", "#4991ea", "#5ca8fc"],
+        'Unranked': ["#9b9b9d", "#aeaeaf", "#bebebe"],
+        'Bronze': ["#c0b5a7", "#ccc1b4", "#e0d6ca"],
+        'Silver': ["#c2d0d4", "#d1dde1", "#eff8fb"],
+        'Gold': ["#e7d69c",  "#f2e8b5", "#ffffd3"],
+        'Platinum': ["#66d0b9", "#7ee5cf", "#9effeb"],
+        'Diamond': ["#66ccd6", "#85e0e9", "#a7f7ff"],
+        'Crystal': ["#789dd9", "#92bdf2", "#9dcbfd"]
     }
 
     const cvas = canvas.createCanvas(3040,1740)

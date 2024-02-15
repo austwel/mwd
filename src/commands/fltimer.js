@@ -24,7 +24,7 @@ export default {
         if(process.env.AUTHORISED_USERS.toString().split(',').includes(interaction.user.id)) {
             if(interaction.client.channels.cache.get(interaction.options.getString('channel').trim()) != undefined) {
                 updateFL(interaction.client, interaction.options.getString('channel'))
-                setInterval(updateFL, 600000, interaction.client, interaction.options.getString('channel'))
+                setInterval(updateFL, 6000000, interaction.client, interaction.options.getString('channel'))
                 await interaction.reply({ ephemeral: true, content: `Set <#${interaction.options.getString('channel')}> as FL timer.` });
             } else {
                 await interaction.reply({ ephemeral: true, content: 'Channel does not exist' })
