@@ -1,16 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { config } from 'dotenv'
+import { updateCC } from '../timers.js'
 config('./.env');
-
-function updateCC(client, channel) {
-    const cc_schedule = ['Palaistra → VH', 'Volcanic → CC', 'Clockwork → PL', 'Palaistra → C9', 'Cloud Nine → RS', 'Red Sands → PL']
-    let current_timestamp = Date.now()
-    let now = Math.floor((current_timestamp % 32400000)/5400000) //Which map
-    let into_map = Math.round(Math.floor((current_timestamp % 5400000)/60000)/5)*5 //Minutes into map
-
-    console.log(`Updating ${cc_schedule[now]} (${90-into_map}m)`)
-    client.channels.cache.get(channel).setName(`${cc_schedule[now]} (${90-into_map}m)`)
-}
 
 export default {
     data: new SlashCommandBuilder()

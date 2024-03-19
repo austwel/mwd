@@ -1,44 +1,25 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ActivityType } from "discord.js";
 import { getRankFromUserId } from "./ranking.js";
+import { getCustom, addCustom, editCustom, removeCustom } from "./db/mysql.js";
 
-export var gameData = {}
-
-function loadStaleData(interaction) {
-	return {
-		waitlist: interaction.message.embeds[0].data.fields[0].value == 'None' ? [] : interaction.message.embeds[0].data.fields[0].value.replaceAll(/[<@>]/g,'').replaceAll(/( \|.+)/g,'').split('\n'), 
-		team1: interaction.message.embeds[0].data.fields[1].value == 'None' ? [] : interaction.message.embeds[0].data.fields[1].value.replaceAll(/[<@>]/g,'').replaceAll(/( \|.+)/g,'').split('\n'), 
-		team2: interaction.message.embeds[0].data.fields[2].value == 'None' ? [] : interaction.message.embeds[0].data.fields[2].value.replaceAll(/[<@>]/g,'').replaceAll(/( \|.+)/g,'').split('\n'), 
-		name: interaction.message.embeds[0].data.title,
-		style: interaction.message.embeds[0].data.description
-	}
-}
-
-function resetData(interaction) {
-	return {
-		waitlist: [],
-		team1: [],
-		team2: [],
-		name: interaction.message.embeds[0].data.title,
-		style: interaction.message.embeds[0].data.description
-	}
+const default_custom = {
+	name: 'Crystalline Conflict Scrim',
+	waitlist: [],
+	astra: [],
+	umbra: []
 }
 
 export async function join(interaction) {
-	var data = {}
-	if (!gameData.hasOwnProperty(interaction.message.id)) {
-		data = loadStaleData(interaction)
-	} else {
-		data = gameData[interaction.message.id]
+	let rows = await getCustom(interaction.message.id)
+	if (rows.length == 0) {
+		await addCustom(default_custom)
 	}
-	if (!data.waitlist.includes(interaction.user.id)) {
-		data.waitlist.push(interaction.user.id)
-		if (data.team1.includes(interaction.user.id)) {
-			data.team1.splice(data.team1.indexOf(interaction.user.id), 1)
-		} else if (data.team2.includes(interaction.user.id)) {
-			data.team2.splice(data.team2.indexOf(interaction.user.id), 1)
-		}
+	game = await getCustom(interaction.message.id)
+	if (!game.waitlist.split(",").includes(interaction.user.id)) {
+		game.waitlist.push(interaction.user.id)
 	}
-	gameData[interaction.message.id] = data
+	await editCustom(game)
+
 	await interaction.update({ 
 		embeds: [customsBuilder(
 			gameData[interaction.message.id].waitlist,
@@ -250,6 +231,43 @@ export function rowsBuilder(style) {
 		return new ActionRowBuilder()
 			.addComponents(join1, join2, leave, reset)
 	}
+}
+
+function waitlistBuilder(name, waitlist) {
+	if (waitlist.length == 0) { var w = 'None' }
+	return new EmbedBuilder()
+		.setColor(0x000000)
+		.setTitle(name)
+		.setDescription('Waiting for 10 players...')
+		.setFooter({ text: 'MateriaWolvesDen Bot'})
+		.addFields(
+			{ name: 'Waitlist', value: waitlist.length > 0 ? waitlist.map((id) => `<@${id}>`).join('\n') : 'None' }
+		)
+}
+
+function picksBuilder(name, waitlist, astra, umbra) {
+	return new EmbedBuilder()
+		.setColor(0x4b7a77)
+		.setTitle(name)
+		.setDescription(`Waiting for <@${astra.length > umbra.length ? astra[0] : umbra[0]}> to pick.`)
+		.setFooter({ text: 'MateriaWolvesDen Bot'})
+		.addFields(
+			{ name: 'Waiting', value: waitlist.map((id) => `<@${id}>`).join('\n') },
+			{ name: 'Astra', value: '[Captain] ' + astra.map((id) => `<@${id}>`).join('\n') },
+			{ name: 'Umbra', value: '[Captain] ' + umbra.map((id) => `<@${id}>`).join('\n') }
+		)
+}
+
+function gameBuilder(name, astra, umbra) {
+	return new EmbedBuilder()
+		.setColor(0x1b81c3)
+		.setTitle(name)
+		.setDescription(`Game in progress. <@${astra[0]}> to create the lobby.`)
+		.setFooter({ text: 'MateriaWolvesDen Bot'})
+		.addFieldss(
+			{ name: 'Astra', value: '[Captain] ' + astra.map((id) => `<@${id}>`).join('\n') },
+			{ name: 'Umbra', value: '[Captain] ' + umbra.map((id) => `<@${id}>`).join('\n') }
+		)
 }
 
 export function customsBuilder(waitlist, team1, team2, name, style) {

@@ -8,6 +8,11 @@ export default {
     async execute(interaction) {
         interaction.deferReply();
         let image = await top100Image()
-        interaction.editReply({ files: [image] })
+        if(image == null) {
+            interaction.editReply({ content: 'Unable to talk to lodestone, is FFXIV down for maint?'})
+            console.error('Couldn\'t pull top 100')
+        } else {
+            interaction.editReply({ files: [image] })
+        }
     }
 }

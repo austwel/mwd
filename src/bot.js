@@ -2,6 +2,9 @@ import { Client, Events, Collection, GatewayIntentBits } from 'discord.js';
 import { readdirSync } from 'fs';
 import { config } from 'dotenv'
 config('./.env');
+import { init, teardown } from './db/mysql.js';
+await init()
+import { startTimers } from './timers.js';
 
 const client = new Client({ intents: [
     GatewayIntentBits.Guilds, 
@@ -10,6 +13,10 @@ const client = new Client({ intents: [
     GatewayIntentBits.GuildIntegrations] });
 
 client.login(process.env.DISCORD_TOKEN);
+
+client.on('ready', () => {
+    startTimers(client)
+})
 
 client.commands = new Collection()
 
@@ -36,3 +43,13 @@ readdirSync('./src/events').forEach((file) => {
             }
         })
 })
+
+const gracefulShutdown = () => {
+    teardown()
+        .catch(() => {})
+        .then(() => process.exit());
+}
+
+process.on('SIGINT', gracefulShutdown);
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGUSR2', gracefulShutdown);

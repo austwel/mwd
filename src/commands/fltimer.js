@@ -1,16 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { config } from 'dotenv'
+import { updateFL } from '../timers.js'
 config('./.env');
-
-function updateFL(client, channel) {
-    const fl_schedule = ['Shatter → Onsal', 'Onsal → Seal Rock', 'Seal Rock → Shatter']
-    let current_timestamp = Date.now()
-    let day = Math.floor(((current_timestamp - 54000000) % 259200000)/86400000) //Which map
-    let into_day = Math.floor(((current_timestamp - 54000000) % 86400000)/3600000) //Hours into map
-
-    console.log(`Updating ${fl_schedule[day]} (${24-into_day}h)`)
-    client.channels.cache.get(channel).setName(`${fl_schedule[day]} (${24-into_day}h)`)
-}
 
 export default {
     data: new SlashCommandBuilder()

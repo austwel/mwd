@@ -1,5 +1,5 @@
 import { Events } from 'discord.js';
-import { join, join1, join2, leave, remove, start, presence } from '../customs.js';
+import { join, join1, join2, leave, remove, reset, start, presence } from '../customs.js';
 import { rank } from '../queue.js'
 
 export default {
@@ -33,6 +33,8 @@ export default {
                     await start(interaction)
                 } else if (interaction.customId == 'remove') {
                     await remove(interaction)
+                } else if (interaction.customId == 'reset') {
+                    await reset(interaction)
                 }
                 await presence(interaction)
             } else if (interaction.isStringSelectMenu()) {
