@@ -21,8 +21,8 @@ export function updateFL(client, channel) {
         let day = Math.floor(((current_timestamp - 54000000) % 259200000)/86400000) //Which map
         let into_day = Math.floor(((current_timestamp - 54000000) % 86400000)/3600000) //Hours into map
     
-        console.log(`${new Date(current_timestamp).getHours()}:${new Date(current_timestamp).getMinutes()} Updating ${channel} - ${fl_schedule[day]} (${24-into_day}h)`)
-        client.channels.fetch(channel).then(chn => chn.setName(`${fl_schedule[day]} (${24-into_day}h)`))
+        console.log(`${new Date(current_timestamp).getHours()}:${new Date(current_timestamp).getMinutes()} Updating ${channel} - ${fl_schedule[day]}`)
+        client.channels.fetch(channel).then(chn => chn.setName(`${fl_schedule[day]}`))
     } catch (error) {
         console.error(error)
     }

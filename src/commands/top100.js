@@ -6,7 +6,7 @@ export default {
     .setName('top100')
     .setDescription('Get the top 100 players from the datacenter.'),
     async execute(interaction) {
-        interaction.deferReply();
+        await interaction.deferReply();
         let image = await top100Image()
         if(image == null) {
             interaction.editReply({ content: 'Unable to talk to lodestone, is FFXIV down for maint?'})

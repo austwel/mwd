@@ -129,8 +129,8 @@ export async function getCustoms() {
 export async function addCustom(game) {
     return new Promise((acc, rej) => {
         pool.query(
-            'INSERT INTO customs (message_id, name, waitlist, captain_umbra, captain_astra, umbra, astra) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [game.message_id, game.name, game.waitlist, game.captain_umbra, game.captain_astra, game.umbra, game.astra],
+            'INSERT INTO customs (message_id, name) VALUES (?, ?)',
+            [game.message_id, game.name],
             err => {
                 if (err) return rej(err);
                 acc();

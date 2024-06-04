@@ -1,10 +1,9 @@
-import { Client, Events, Collection, GatewayIntentBits } from 'discord.js';
+import { Client, Events, Collection, GatewayIntentBits, ActivityType } from 'discord.js';
 import { readdirSync } from 'fs';
 import { config } from 'dotenv'
 config('./.env');
 import { init, teardown } from './db/mysql.js';
 await init()
-import { startTimers } from './timers.js';
 
 const client = new Client({ intents: [
     GatewayIntentBits.Guilds, 
@@ -12,11 +11,7 @@ const client = new Client({ intents: [
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildIntegrations] });
 
-client.login(process.env.DISCORD_TOKEN);
-
-client.on('ready', () => {
-    startTimers(client)
-})
+client.login(process.env.DISCORD_TOKEN)
 
 client.commands = new Collection()
 
